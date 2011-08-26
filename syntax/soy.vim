@@ -13,7 +13,11 @@ elseif exists("b:current_syntax")
 endif
 
 syntax clear
-syntax case match
+syntax case ignore
+
+runtime! syntax/html.vim
+
+syntax keyword soyCommentTodo      TODO FIXME XXX TBD contained
 
 syntax keyword soyConstant contained null
 syntax keyword soyConstant contained false
@@ -93,15 +97,15 @@ syntax keyword soyDirective contained bidiUnicodeWrap
 
 syntax match soySpecialComment /@param?\?/ contained
 
-syntax region soyCommand start="{" end="}" contains=soyKeyword, soyDirective, soyIdentifier, soyString, soyTemplate, soyConstant, soyInteger, soyCharacter, soyFloat, soySci, soyOperator, soyFunction, soyRepeat, soyConditional, soyStatement, soyLabel
+syntax region soyCommand start="{" end="}" contains=soyKeyword, soyDirective, soyIdentifier, soyString, soyTemplate, soyConstant, soyInteger, soyCharacter, soyFloat, soySci, soyOperator, soyFunction, soyRepeat, soyConditional, soyStatement, soyLabel,soyCommentTodo
 
 syntax region soyString contained start="\'" end="\'"
 syntax region soyString contained start="\"" end="\""
 
 syntax match soyIdentifier /\$[a-zA-Z0-9._]*\>/ contained
-syntax region soyComment start=/\/\*/ end='\\*\/' contains=soySpecialComment
+syntax region soyComment start=/\/\*/ end='\\*\/' contains=soySpecialComment,soyCommentTodo
 
-syntax match soyComment /\/\/.*$/
+syntax match soyComment /\/\/.*$/ contains=soyCommentTodo
 syntax match soyTemplate /\s\+\.\w\+\>/ contained
 
 syntax match soyInteger /\-\?\(0x\)\?[A-F0-9]\+\>/ contained
@@ -118,6 +122,14 @@ syntax match soyLabel /\<\w\+:/ contained
 " Yes, this causes the - in -1 to show as an operator. This is a bug.
 syntax match soyOperator /[-*/%+<>=!?:]/ contained
 
+
+syntax region  htmlString   contained start=+"+ end=+"+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,soyCommand
+syntax region  htmlString   contained start=+'+ end=+'+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,soyCommand
+syntax region  htmlLink start="<a\>\_[^>]*\<href\>" end="</a>"me=e-4 contains=@Spell,htmlTag,htmlEndTag,htmlSpecialChar,htmlPreProc,htmlComment,javaScript,@htmlPreproc,soyCommand
+syntax region  htmlEndTag             start=+</+      end=+>+ contains=htmlTagN,htmlTagError,soyCommand
+syntax region  htmlTag                start=+<[^/]+   end=+>+ contains=htmlTagN,htmlString,htmlArg,htmlValue,htmlTagError,htmlEvent,htmlCssDefinition,@htmlPreproc,@htmlArgCluster,soyCommand
+
+highlight def link soyCommentTodo Todo
 highlight def link soyOperator Operator
 highlight def link soyKeyword Statement
 highlight def link soyDirective Type
@@ -136,3 +148,5 @@ highlight def link soyConditional Conditional
 highlight def link soyStatement Statement
 highlight def link soySpecialComment SpecialComment
 highlight def link soyLabel Identifier
+
+
