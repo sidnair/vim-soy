@@ -122,13 +122,13 @@ syntax match soyLabel /\<\w\+:/ contained
 " Yes, this causes the - in -1 to show as an operator. This is a bug.
 syntax match soyOperator /[-*/%+<>=!?:]/ contained
 
-
 syntax region  htmlString   contained start=+"+ end=+"+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,soyCommand
 syntax region  htmlString   contained start=+'+ end=+'+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,soyCommand
 syntax region  htmlLink start="<a\>\_[^>]*\<href\>" end="</a>"me=e-4 contains=@Spell,htmlTag,htmlEndTag,htmlSpecialChar,htmlPreProc,htmlComment,javaScript,@htmlPreproc,soyCommand
 syntax region  htmlEndTag             start=+</+      end=+>+ contains=htmlTagN,htmlTagError,soyCommand
 syntax region  htmlTag                start=+<[^/]+   end=+>+ contains=htmlTagN,htmlString,htmlArg,htmlValue,htmlTagError,htmlEvent,htmlCssDefinition,@htmlPreproc,@htmlArgCluster,soyCommand
 
+highlight def link soyCommand PreProc
 highlight def link soyCommentTodo Todo
 highlight def link soyOperator Operator
 highlight def link soyKeyword Statement
