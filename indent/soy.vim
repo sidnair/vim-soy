@@ -14,10 +14,26 @@ runtime! indent/html.vim
 let b:did_indent = 1
 
 func! SoyIndent()
+  let line = getline(v:lnum)
+
   " Indent comments correctly. Since Soy uses C-style comments, delegate to the
   " C indentation algorithm when in the middle of a multiline comment.
-  if getline(v:lnum) =~ '^\s*\*'
+  if line =~ '^\s*\*'
     return cindent(getline(v:lnum))
+  endif
+
+  let plnum = prevnonblank(v:lnum - 1)
+  let pline = getline(plnum)
+  let plindent = indent(plnum)
+
+  " De-indent after closing tags
+  if line =~ '^\s*{\/.*'
+    return plindent - &sw
+  endif
+
+  " Indent after opening Soy tags
+  if pline =~ '^\s*{\w\+.*[^/]}'
+    return plindent + &sw
   endif
 
   return HtmlIndent()
