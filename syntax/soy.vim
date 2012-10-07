@@ -47,11 +47,6 @@ syntax keyword soyKeyword contained template
 syntax keyword soyKeyword contained literal
 syntax keyword soyKeyword contained print
 
-syntax keyword soyKeyword contained namespace
-syntax keyword soyKeyword contained template
-syntax keyword soyKeyword contained literal
-syntax keyword soyKeyword contained print
-
 syntax keyword soyStatement contained namespace
 syntax keyword soyStatement contained template
 
@@ -148,5 +143,3 @@ highlight def link soyConditional Conditional
 highlight def link soyStatement Statement
 highlight def link soySpecialComment SpecialComment
 highlight def link soyLabel Identifier
-
-
